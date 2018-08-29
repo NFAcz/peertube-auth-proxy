@@ -1,17 +1,27 @@
-# PeerTube Uploader
+# PeerTube Auth Proxy
 
 ## Requirements
  * Python 3
  * python-requests
- * PyYAML
+ * Flask
 
 ## Usage
-First, add correct client ID and secret to config.yml.
 ````
 $ pip install -r requirements.txt
-$ ./peertube-uploader.py 
-usage: peertube-uploader.py [-h] -u USERNAME -p PASSWORD -f FILE [-n NAME]
-                            [-c CHANNEL] [-H HOST] [-P PORT] [--config CONFIG]
-                            [--private]
-peertube-uploader.py: error: the following arguments are required: -u/--username, -p/--password, -f/--file
+$ ./peertube-auth-proxy.py 
+                              [-s CLIENT_SECRET] [-c CLIENT_ID] [-H HOST]
+                              [-P PORT]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u USERNAME, --username USERNAME
+                        Username
+  -p PASSWORD, --password PASSWORD
+                        Password
+  -s CLIENT_SECRET, --client_secret CLIENT_SECRET
+                        Client secret to use
+  -c CLIENT_ID, --client_id CLIENT_ID
+                        Channel ID to use
+  -H HOST, --host HOST  Host name
+  -P PORT, --port PORT  Port
 ````
