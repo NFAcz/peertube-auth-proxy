@@ -8,7 +8,7 @@
 ## Usage
 ````
 $ pip install -r requirements.txt
-$ ./peertube-auth-proxy.py 
+$ ./app.py 
                               [-s CLIENT_SECRET] [-c CLIENT_ID] [-H HOST]
                               [-P PORT]
 

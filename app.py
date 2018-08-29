@@ -31,10 +31,10 @@ def root(path):
 
     try:
         access_token = (auth_result.json()['access_token'])
-	user_info = requests.get('{0}{1}'.format(args.endpoint, '/api/v1/users/me'), headers={'Authorization': 'Bearer {0}'.format(access_token)}).json()
+        user_info = requests.get('{0}{1}'.format(args.endpoint, '/api/v1/users/me'), headers={'Authorization': 'Bearer {0}'.format(access_token)}).json()
         refresh_token = (auth_result.json()['refresh_token'])
         token_type = (auth_result.json()['token_type'])
-	local_storage_data = ['localStorage.setItem("access_token", "{0}");'.format(access_token),
+        local_storage_data = ['localStorage.setItem("access_token", "{0}");'.format(access_token),
                               'localStorage.setItem("refresh_token", "{0}");'.format(refresh_token),
                               'localStorage.setItem("token_type", "{0}");'.format(token_type),
                               'localStorage.setItem("id", "{0}");'.format(user_info['id']),
@@ -43,12 +43,12 @@ def root(path):
                               'localStorage.setItem("username", "{0}");'.format(user_info['username']),
                               'localStorage.setItem("nsfw_policy", "{0}");'.format(user_info['nsfwPolicy']),
                               'localStorage.setItem("auto_play_video", "{0}");'.format(user_info['autoPlayVideo'])]
-	local_storage_data = ''.join(local_storage_data)
-	response = make_response('<script>{0};window.location.href = "/";</script>'.format(local_storage_data))
-	response.set_cookie('peertube_auth', access_token)
+        local_storage_data = ''.join(local_storage_data)
+        response = make_response('<script>{0};window.location.href = "/";</script>'.format(local_storage_data))
+        response.set_cookie('peertube_auth', access_token)
         return response
     except Exception as e:
-	raise
+        raise
         return Response(e.args, 401)
 
 
