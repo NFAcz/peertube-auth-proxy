@@ -25,7 +25,7 @@ def root(path):
                 'grant_type': 'password',
                 'password': args.password,
                 'response_type': 'code',
-                'username': request.headers['X-User'] if request.headers['X-User'] else args.username
+                'username': request.headers.get('X-User') if 'X-User' in request.headers else args.username
                 }
     auth_result = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/token'), data=auth_data)
 
@@ -47,9 +47,10 @@ def root(path):
         response = make_response('<script>{0};window.location.href = "/";</script>'.format(local_storage_data))
         response.set_cookie('peertube_auth', access_token)
         return response
+    except KeyError:
+        return Response(auth_result.text, 401)
     except Exception as e:
-        raise
-        return Response(e.args, 401)
+        return Response('Error during login', 500)
 
 
 if __name__ == '__main__':
