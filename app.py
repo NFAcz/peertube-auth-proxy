@@ -4,6 +4,7 @@ import os
 import sys
 import requests
 import argparse
+import traceback
 from flask import Flask, request, redirect, Response, make_response
 
 parser = argparse.ArgumentParser()
@@ -49,7 +50,8 @@ def root(path):
         return response
     except KeyError:
         return Response(auth_result.text, 401)
-    except Exception as e:
+    except Exception, err:
+        traceback.print_exc()
         return Response('Error during login', 500)
 
 
