@@ -30,6 +30,14 @@ def root(path):
                 }
     auth_result = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/token'), data=auth_data)
 
+    if auth_result.json().get('code') == 'invalid_grant':
+        registration_data = {'email': request.headers.get('X-Email') if 'X-Email' in request.headers else '{0}@nfa.cz'.format(args.username),
+                             'password': args.password,
+                             'terms': 'true',
+                             'username': request.headers.get('X-User') if 'X-User' in request.headers else args.username}
+        user_registration = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/register'), data=registration_data)
+	return(redirect('/'))
+
     try:
         access_token = (auth_result.json()['access_token'])
         user_info = requests.get('{0}{1}'.format(args.endpoint, '/api/v1/users/me'), headers={'Authorization': 'Bearer {0}'.format(access_token)}).json()
