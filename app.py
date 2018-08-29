@@ -50,7 +50,7 @@ def root(path):
         return response
     except KeyError:
         return Response(auth_result.text, 401)
-    except Exception, err:
+    except Exception as err:
         traceback.print_exc()
         return Response('Error during login', 500)
 
