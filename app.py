@@ -36,7 +36,7 @@ def root(path):
                              'terms': 'true',
                              'username': request.headers.get('X-User') if 'X-User' in request.headers else args.username}
         user_registration = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/register'), data=registration_data)
-	return(redirect('/'))
+        return(redirect('/'))
 
     try:
         access_token = (auth_result.json()['access_token'])
