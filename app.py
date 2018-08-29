@@ -54,7 +54,7 @@ def root(path):
                               'localStorage.setItem("auto_play_video", "{0}");'.format(user_info['autoPlayVideo'])]
         local_storage_data = ''.join(local_storage_data)
         response = make_response('<script>{0};window.location.href = "/";</script>'.format(local_storage_data))
-        response.set_cookie('peertube_auth', access_token)
+        response.set_cookie('peertube_auth', 'yes')
         return response
     except KeyError:
         return Response(auth_result.text, 401)
