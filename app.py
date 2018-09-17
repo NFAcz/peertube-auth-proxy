@@ -21,6 +21,9 @@ app = Flask(__name__)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def root(path):
+    if 'Safari' in request.headers.get('User-Agent'):
+        return('Apple Safari is not supported, please use Mozilla Firefox or Google Chrome')
+
     auth_data = {'client_id': args.client_id,
                 'client_secret': args.client_secret,
                 'grant_type': 'password',
