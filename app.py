@@ -16,14 +16,14 @@ parser.add_argument('-e', '--endpoint', help='Peertube endpoint', default=os.get
 parser.add_argument('-H', '--host', help='Host to listen on', default=os.getenv('LISTEN_HOST', 'localhost'))
 parser.add_argument('-P', '--port', help='Port', default=os.getenv('LISTEN_PORT', '9001'))
 args = parser.parse_args()
-app = Flask(__name__)
+application = Flask(__name__)
 
-@app.route('/favicon.ico')
+@application.route('/favicon.ico')
 def favicon():
     return abort(404)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@application.route('/', defaults={'path': ''})
+@application.route('/<path:path>')
 def root(path):
     auth_data = {'client_id': args.client_id,
                 'client_secret': args.client_secret,
@@ -68,5 +68,5 @@ def root(path):
 
 
 if __name__ == '__main__':
-     app.run(threaded=True, host=args.host, port=int(args.port))
+     application.run(threaded=True, host=args.host, port=int(args.port))
 
