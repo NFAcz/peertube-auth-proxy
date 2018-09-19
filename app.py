@@ -5,7 +5,7 @@ import sys
 import requests
 import argparse
 import traceback
-from flask import Flask, request, redirect, Response, make_response
+from flask import Flask, request, redirect, Response, make_response, abort
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', '--username', help='Username', default=os.getenv('PEERTUBE_USERNAME', ''))
@@ -17,6 +17,10 @@ parser.add_argument('-H', '--host', help='Host to listen on', default=os.getenv(
 parser.add_argument('-P', '--port', help='Port', default=os.getenv('LISTEN_PORT', '9001'))
 args = parser.parse_args()
 app = Flask(__name__)
+
+@app.route('/favicon.ico')
+def favicon():
+    return abort(404)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
