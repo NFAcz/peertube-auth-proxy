@@ -33,8 +33,12 @@ def root(path):
                 'username': request.headers.get('X-User') if 'X-User' in request.headers else args.username
                 }
     auth_result = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/token'), data=auth_data)
+    try:
+	data = auth_result.json()
+    except:
+	return(auth_result.text, 500)
 
-    if auth_result.json().get('code') == 'invalid_grant':
+    if data.get('code') == 'invalid_grant':
         registration_data = {'email': request.headers.get('X-Email') if 'X-Email' in request.headers else '{0}@nfa.cz'.format(args.username),
                              'password': args.password,
                              'terms': 'true',
@@ -43,10 +47,10 @@ def root(path):
         return(redirect('/'))
 
     try:
-        access_token = (auth_result.json()['access_token'])
+        access_token = (data['access_token'])
         user_info = requests.get('{0}{1}'.format(args.endpoint, '/api/v1/users/me'), headers={'Authorization': 'Bearer {0}'.format(access_token)}).json()
-        refresh_token = (auth_result.json()['refresh_token'])
-        token_type = (auth_result.json()['token_type'])
+        refresh_token = (data['refresh_token'])
+        token_type = (data['token_type'])
         local_storage_data = ['localStorage.setItem("access_token", "{0}");'.format(access_token),
                               'localStorage.setItem("refresh_token", "{0}");'.format(refresh_token),
                               'localStorage.setItem("token_type", "{0}");'.format(token_type),
