@@ -30,7 +30,7 @@ def root(path):
                 'grant_type': 'password',
                 'password': args.password,
                 'response_type': 'code',
-                'username': request.headers.get('X-User') if 'X-User' in request.headers else args.username
+                'username': request.headers.get('X-User').lower() if 'X-User' in request.headers else args.username
                 }
     auth_result = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/token'), data=auth_data)
     try:
@@ -42,7 +42,7 @@ def root(path):
         registration_data = {'email': request.headers.get('X-Email') if 'X-Email' in request.headers else '{0}@nfa.cz'.format(args.username),
                              'password': args.password,
                              'terms': 'true',
-                             'username': request.headers.get('X-User') if 'X-User' in request.headers else args.username}
+                             'username': request.headers.get('X-User').lower() if 'X-User' in request.headers else args.username}
         user_registration = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/register'), data=registration_data)
         return(redirect('/'))
 
