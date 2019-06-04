@@ -61,7 +61,7 @@ def root(path):
                               'localStorage.setItem("nsfw_policy", "{0}");'.format(user_info['nsfwPolicy']),
                               'localStorage.setItem("auto_play_video", "{0}");'.format(user_info['autoPlayVideo'])]
         local_storage_data = ''.join(local_storage_data)
-        response = make_response('<script>{0};window.location.href = "/";</script>'.format(local_storage_data))
+        response = make_response('<script>{0};window.location.href = "/{1}";</script>'.format(local_storage_data, path))
         response.set_cookie('peertube_auth', 'yes')
         return response
     except KeyError:
