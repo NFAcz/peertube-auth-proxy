@@ -34,9 +34,9 @@ def root(path):
                 }
     auth_result = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/token'), data=auth_data)
     try:
-	data = auth_result.json()
+        data = auth_result.json()
     except:
-	return(auth_result.text, 500)
+        return(auth_result.text, 500)
 
     if data.get('code') == 'invalid_grant':
         registration_data = {'email': request.headers.get('X-Email') if 'X-Email' in request.headers else '{0}@nfa.cz'.format(args.username),
@@ -44,7 +44,7 @@ def root(path):
                              'terms': 'true',
                              'username': request.headers.get('X-User').lower() if 'X-User' in request.headers else args.username}
         user_registration = requests.post('{0}{1}'.format(args.endpoint, '/api/v1/users/register'), data=registration_data)
-        return(redirect('/'))
+        return(redirect('/{0}'.format(path)))
 
     try:
         access_token = (data['access_token'])
@@ -57,9 +57,7 @@ def root(path):
                               'localStorage.setItem("id", "{0}");'.format(user_info['id']),
                               'localStorage.setItem("role", "{0}");'.format(user_info['role']),
                               'localStorage.setItem("email", "{0}");'.format(user_info['email']),
-                              'localStorage.setItem("username", "{0}");'.format(user_info['username']),
-                              'localStorage.setItem("nsfw_policy", "{0}");'.format(user_info['nsfwPolicy']),
-                              'localStorage.setItem("auto_play_video", "{0}");'.format(user_info['autoPlayVideo'])]
+                              'localStorage.setItem("username", "{0}");'.format(user_info['username'])]
         local_storage_data = ''.join(local_storage_data)
         response = make_response('<script>{0};window.location.href = "/{1}";</script>'.format(local_storage_data, path))
         response.set_cookie('peertube_auth', 'yes')
